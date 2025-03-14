@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">TesteMercadoLivre</string>
+    <string name="label_search_input">Buscar no Mercado Livre</string>
+    <string name="search_error_dismiss">Fechar</string>
+    <string name="label_sold_quantity">%s vendidos</string>
+    <string name="label_available_quantity">Estoque disponivel: %s</string>
+    <string name="image_product">Image do produto</string>
+    <string name="error_loading_data">Erro ao carregar os dados</string>
+    <string name="empty_list_products">Lista vazia de produtos</string>
 </resources>

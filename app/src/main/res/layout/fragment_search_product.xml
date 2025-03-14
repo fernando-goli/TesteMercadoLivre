@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/search"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.presentation.searchTerm.SearchProductFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="@color/yellow" />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/cards_bg"
+        android:imeOptions="actionSearch"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:textColor="?attr/colorOnBackground"
+        app:iconifiedByDefault="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="@string/label_search_input" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/search_input"
+        app:layout_constraintEnd_toEndOf="@id/search_input"
+        app:layout_constraintTop_toTopOf="@id/search_input"
+        tools:visibility="visible" />
+
+</FrameLayout>

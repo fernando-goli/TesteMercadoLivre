@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_product"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/cards_bg"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/image_product"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:contentDescription="@string/image_product"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/name_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/image_product"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Test" />
+
+    <TextView
+        android:id="@+id/price_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toEndOf="@id/image_product"
+        app:layout_constraintTop_toBottomOf="@id/name_product"
+        tools:text="R$ 10" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

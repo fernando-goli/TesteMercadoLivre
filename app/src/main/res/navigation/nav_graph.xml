@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/searchProductFragment">
+
+    <fragment
+        android:id="@+id/searchProductFragment"
+        android:name="com.example.testemercadolivre.search.presentation.searchTerm.SearchProductFragment"
+        android:label="fragment_search_product"
+        tools:layout="@layout/fragment_search_product">
+        <action
+            android:id="@+id/action_searchProductFragment_to_listProductsFragment"
+            app:destination="@id/listProductsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailItemFragment"
+        android:name="com.example.testemercadolivre.search.presentation.detailItem.DetailItemFragment"
+        android:label="fragment_detail_item"
+        tools:layout="@layout/fragment_detail_item">
+        <argument
+            android:name="product"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/listProductsFragment"
+        android:name="com.example.testemercadolivre.search.presentation.listProducts.ListProductsFragment"
+        android:label="fragment_list_products"
+        tools:layout="@layout/fragment_list_products">
+        <action
+            android:id="@+id/action_listProductsFragment_to_detailItemFragment"
+            app:destination="@id/detailItemFragment" />
+        <argument
+            android:name="product"
+            app:argType="string" />
+    </fragment>
+</navigation>
