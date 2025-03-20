@@ -30,4 +30,4 @@ O aplicativo é construído usando o padrão Clean Architecture baseado em [Arch
 
 Search Screen | Overview Screen | Details Screen
 --- | --- | ---
-<img src="screenshot_search_screen.pgn" width="300" alt="Search Screen"/> | <img src="screenshot_list_products.pgn" width="300" alt="Overview Screen"/> | <img src="screenshot_detail_products.png" width="300" alt="Details Screen"/>
+<img src="screenshot_search_screen.png" width="300" alt="Search Screen"/> | <img src="screenshot_list_products.png" width="300" alt="Overview Screen"/> | <img src="screenshot_detail_product.png" width="300" alt="Details Screen"/>
