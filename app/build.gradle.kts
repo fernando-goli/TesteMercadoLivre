@@ -23,9 +23,13 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"https://api.mercadolibre.com/\"")
+            buildConfigField("String", "CLIENT_ID", "\"1287736882365902\"")
+            buildConfigField("String", "CLIENT_SECRET", "\"IWpkhB2nCwWWYl1G8c8xzrKI0z5Z63pG\"")
         }
         release {
             buildConfigField("String", "BASE_URL", "\"https://api.mercadolibre.com/\"")
+            buildConfigField("String", "CLIENT_ID", "\"1287736882365902\"")
+            buildConfigField("String", "CLIENT_SECRET", "\"IWpkhB2nCwWWYl1G8c8xzrKI0z5Z63pG\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -75,11 +79,15 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.paging)
     implementation(libs.glide)
+    implementation(libs.jsoup)
+    implementation(libs.timber)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.junit)
+    testImplementation(libs.junit)
     testImplementation(libs.mockk.test)
+    testImplementation(libs.mockk.jvm)
     testImplementation(libs.coroutines.test)
     testImplementation(libs.mockwebserver.test)
     testImplementation(libs.truth.test)

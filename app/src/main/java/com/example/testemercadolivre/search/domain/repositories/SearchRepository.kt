@@ -6,6 +6,6 @@ import com.example.testemercadolivre.search.domain.models.Product
 import kotlinx.coroutines.flow.Flow
 
 interface SearchRepository {
-    suspend fun getSearchProducts(term: String): Flow<PagingData<Product>>
-    suspend fun getProduct(product: String): Result<Product>
+    suspend fun getSearchProducts(term: String, accessToken: String): Flow<PagingData<Product>>
+    suspend fun getProduct(product: String, accessToken: String): Result<Product>
 }

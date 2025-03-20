@@ -11,5 +11,8 @@ data class ProductDTO(
     val initial_quantity: Int,
     val sold_quantity: Int,
     val condition: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val warranty: String?,
+    val descriptions: List<String>?
+
 )

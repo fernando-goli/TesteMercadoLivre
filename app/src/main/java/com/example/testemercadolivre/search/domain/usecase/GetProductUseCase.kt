@@ -6,5 +6,6 @@ import javax.inject.Inject
 class GetProductUseCase @Inject constructor(
     private val searchRepository: SearchRepository
 ) {
-    suspend operator fun invoke(query: String) = searchRepository.getProduct(query)
+    suspend operator fun invoke(query: String, accessToken: String) =
+        searchRepository.getProduct(query, accessToken)
 }

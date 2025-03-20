@@ -1,5 +1,6 @@
 package com.example.testemercadolivre.search.presentation.detailItem
 
+import android.content.Context
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.testemercadolivre.R
+import com.example.testemercadolivre.core.util.TOKEN_CODE
 import com.example.testemercadolivre.core.util.toCurrency
 import com.example.testemercadolivre.databinding.FragmentDetailItemBinding
 import com.example.testemercadolivre.search.domain.models.Product
@@ -25,12 +27,15 @@ class DetailItemFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentDetailItemBinding.inflate(inflater, container, false)
+        val accessToken = context?.getSharedPreferences(TOKEN_CODE, Context.MODE_PRIVATE)
+            ?.getString("accessToken", "")
+
         arguments?.let {
             product = DetailItemFragmentArgs.fromBundle(it).product
-            viewModel.getProduct(product)
+            accessToken?.let { viewModel.getProduct(product, accessToken) }
         }
         return binding.root
     }
@@ -39,7 +44,6 @@ class DetailItemFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         observer()
-        binding.searchInput.setQuery(product, false)
     }
 
     private fun observer() {
@@ -57,9 +61,12 @@ class DetailItemFragment : Fragment() {
     }
 
     private fun bind(product: Product) {
+        binding.searchInput.setQuery(product.title, false)
         binding.loadingBar.isVisible = false
         binding.titleProduct.text = product.title
         binding.condition.text = product.condition
+        binding.warranty.text = product.warranty
+        binding.description.text = product.descriptions?.firstOrNull()
         binding.priceProduct.text = product.price.toCurrency()
         binding.soldQuantity.text =
             getString(R.string.label_sold_quantity, product.soldQuantity.toString())
@@ -71,7 +78,7 @@ class DetailItemFragment : Fragment() {
     }
 
     private fun showError(
-        message: String, duration: Int = Snackbar.LENGTH_INDEFINITE
+        message: String, duration: Int = Snackbar.LENGTH_INDEFINITE,
     ) {
         Snackbar.make(
             binding.root, message, duration

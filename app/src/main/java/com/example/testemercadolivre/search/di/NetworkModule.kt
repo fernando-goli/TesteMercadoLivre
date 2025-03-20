@@ -2,6 +2,7 @@ package com.example.testemercadolivre.search.di
 
 import com.example.testemercadolivre.BuildConfig
 import com.example.testemercadolivre.core.util.API_DATE_FORMAT
+import com.example.testemercadolivre.search.data.datasource.remote.api.AuthService
 import com.example.testemercadolivre.search.data.datasource.remote.api.SearchService
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -33,6 +34,7 @@ class NetworkModule {
 
     @Singleton
     @Provides
+    @SearchRetrofit
     fun providesSearchRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
@@ -42,7 +44,22 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun providesSearchService(retrofit: Retrofit): SearchService =
+    fun providesSearchService(@SearchRetrofit retrofit: Retrofit): SearchService =
+        retrofit.create()
+
+    @Singleton
+    @Provides
+    @AuthRetrofit
+    fun providesAuthRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .client(okHttpClient)
+            .build()
+
+    @Singleton
+    @Provides
+    fun providesAuthService(@AuthRetrofit retrofit: Retrofit): AuthService =
         retrofit.create()
 
 }

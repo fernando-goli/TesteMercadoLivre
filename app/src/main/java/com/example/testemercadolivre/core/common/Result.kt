@@ -1,33 +1,32 @@
 package com.example.testemercadolivre.core.common
 
-data class Result<out T>(
-    val status: Status,
-    val data: T? = null,
-    val message: String? = null,
-    val code: Int? = null,
-) {
+sealed class Result<T> {
+    class Success<T>(val data: T) : Result<T>()
+    class Error<T : Any>(val code: Int, val message: String?) : Result<T>()
+    class Exception<T : Any>(val exception: kotlin.Exception) : Result<T>()
+}
 
-    enum class Status {
-        SUCCESS,
-        ERROR,
-        LOADING,
-    }
+inline fun <R, T> Result<T>.fold(
+    onSuccess: (value: T) -> R,
+    onError: (code: Int, message: String?) -> R,
+    onException: (exception: Exception) -> R,
+): R = when (this) {
+    is Result.Success -> onSuccess(data)
+    is Result.Error -> onError(code, message)
+    is Result.Exception -> onException(exception)
+}
 
-    companion object {
-        fun <T> success(data: T?): Result<T> {
-            return Result(Status.SUCCESS, data)
-        }
+fun <T> Result<T>.getSuccess() = when (this) {
+    is Result.Success -> data
+    else -> null
+}
 
-        fun <T> error(
-            message: String? = null,
-            data: T? = null,
-            code: Int? = null,
-        ): Result<T> {
-            return Result(Status.ERROR, data, message, code)
-        }
+fun <T> Result<T>.getErrorCode() = when (this) {
+    is Result.Error -> code
+    else -> null
+}
 
-        fun <T> loading(): Result<T> {
-            return Result(Status.LOADING)
-        }
-    }
+fun <T> Result<T>.getException() = when (this) {
+    is Result.Exception -> exception
+    else -> null
 }

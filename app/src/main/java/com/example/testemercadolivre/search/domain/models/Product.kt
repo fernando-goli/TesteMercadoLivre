@@ -8,5 +8,7 @@ data class Product(
     val soldQuantity: Int,
     val condition: String,
     val thumbnail: String,
-    var quantity: Int = 1
+    val quantity: Int = 1,
+    val warranty: String?,
+    val descriptions: List<String>?
 )

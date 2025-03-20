@@ -1,4 +1,4 @@
-package com.example.testemercadolivre.search.domain.paging
+package com.example.testemercadolivre.search.presentation.listProducts.paging
 
 import android.view.LayoutInflater
 import android.view.View

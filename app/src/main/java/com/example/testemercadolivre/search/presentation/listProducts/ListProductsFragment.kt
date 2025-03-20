@@ -1,5 +1,6 @@
 package com.example.testemercadolivre.search.presentation.listProducts
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +14,10 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.testemercadolivre.R
+import com.example.testemercadolivre.core.util.TOKEN_CODE
 import com.example.testemercadolivre.databinding.FragmentListProductsBinding
 import com.example.testemercadolivre.search.domain.models.Product
-import com.example.testemercadolivre.search.domain.paging.LoaderAdapter
+import com.example.testemercadolivre.search.presentation.listProducts.paging.LoaderAdapter
 import com.example.testemercadolivre.search.presentation.listProducts.SearchResultsAdapter.AdapterListener
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,15 +34,19 @@ class ListProductsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentListProductsBinding.inflate(layoutInflater)
+        val accessToken = context?.getSharedPreferences(TOKEN_CODE, Context.MODE_PRIVATE)
+            ?.getString("accessToken", "")
         arguments?.let {
             product = ListProductsFragmentArgs.fromBundle(it).product
-            viewModel.getListProducts(product)
+            accessToken?.let {
+                viewModel.getListProducts(product, accessToken)
+            }
         }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = FragmentListProductsBinding.inflate(inflater, container, false)
         return binding.root
@@ -91,14 +97,14 @@ class ListProductsFragment : Fragment() {
                 is LoadState.NotLoading -> {
                     if (loadState.append.endOfPaginationReached && adapter.itemCount < 1)
                         showError(getString(R.string.empty_list_products))
-                    else
-                        binding.progressBarExplore.isVisible = false
+                    binding.progressBarExplore.isVisible = false
                     binding.listProducts.isVisible = true
                 }
 
                 is LoadState.Error -> showError(getString(R.string.error_loading_data))
             }
         }
+
         lifecycleScope.launch {
             viewModel.product.value.collect { items ->
                 adapter.submitData(viewLifecycleOwner.lifecycle, items)
@@ -107,7 +113,7 @@ class ListProductsFragment : Fragment() {
     }
 
     private fun showError(
-        message: String, duration: Int = Snackbar.LENGTH_INDEFINITE
+        message: String, duration: Int = Snackbar.LENGTH_INDEFINITE,
     ) {
         Snackbar.make(
             binding.root, message, duration

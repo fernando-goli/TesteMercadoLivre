@@ -1,32 +1,34 @@
-package com.example.testemercadolivre.search.presentation.detailItem
+package com.example.testemercadolivre.presentation.detailItem
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.testemercadolivre.core.common.Result
 import com.example.testemercadolivre.search.domain.models.Product
 import com.example.testemercadolivre.search.domain.usecase.GetProductUseCase
+import com.example.testemercadolivre.search.presentation.detailItem.DetailItemViewModel
 import com.example.testemercadolivre.util.MainCoroutineRule
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
+import io.mockk.mockk
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
-
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class DetailItemViewModelTest {
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     val coroutineRule = MainCoroutineRule()
 
     @MockK
-    private lateinit var getProductUseCase: GetProductUseCase
+    private var getProductUseCase: GetProductUseCase = mockk()
     private lateinit var viewModel: DetailItemViewModel
 
     private val product = Product(
@@ -37,7 +39,9 @@ class DetailItemViewModelTest {
         soldQuantity = 2,
         condition = "new",
         thumbnail = "imagem",
-        quantity = 1
+        quantity = 1,
+        "",
+        listOf()
     )
 
     @Before
@@ -48,9 +52,10 @@ class DetailItemViewModelTest {
 
     @Test
     fun `getProduct should be successful`() = runTest {
-        coEvery { getProductUseCase("iphone") } returns Result.success(product)
+        coEvery { getProductUseCase.invoke("iphone", "token") } returns
+                Result.Success(product)
 
-        viewModel.getProduct("iphone")
+        viewModel.getProduct("iphone", "token")
 
         assertThat(viewModel.state.productResult.value).isEqualTo(product)
     }
@@ -58,14 +63,28 @@ class DetailItemViewModelTest {
     @Test
     fun `getProduct should be an error`() = runTest {
         val message = "unauthorized"
-            coEvery { getProductUseCase("iphone") } returns Result.error(
-                code = 401,
-                message = "unauthorized"
-            )
+        coEvery { getProductUseCase.invoke("iphone", "token") } returns Result.Error(
+            code = 401,
+            message = "unauthorized"
+        )
 
-        viewModel.getProduct("iphone")
+        viewModel.getProduct("iphone", "token")
 
         assertThat(viewModel.state.error.value).isEqualTo(message)
+    }
+
+    @Test
+    fun `getProduct should be an exception`() = runTest {
+        this.launch {
+            val message = "unauthorized"
+            coEvery { getProductUseCase.invoke("iphone", accessToken = "token") } returns
+                    Result.Exception(exception = Exception(message))
+
+            viewModel.getProduct("iphone", accessToken = "token")
+
+            assertThat(viewModel.state.error.value).isEqualTo(message)
+        }
+
     }
 
 }

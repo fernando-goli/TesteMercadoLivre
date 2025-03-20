@@ -1,5 +1,7 @@
 package com.example.testemercadolivre.search.di
 
+import com.example.testemercadolivre.search.data.repositories.AuthRepository
+import com.example.testemercadolivre.search.data.repositories.AuthRepositoryImpl
 import com.example.testemercadolivre.search.data.repositories.SearchRepositoryImpl
 import com.example.testemercadolivre.search.domain.repositories.SearchRepository
 import dagger.Binds
@@ -13,4 +15,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun providesSearchRepository(searchRepositoryImpl: SearchRepositoryImpl): SearchRepository
+
+    @Binds
+    abstract fun providesAuthRepository(authRepository: AuthRepositoryImpl): AuthRepository
 }

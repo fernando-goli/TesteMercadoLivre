@@ -9,6 +9,8 @@ import com.example.testemercadolivre.search.domain.usecase.GetSearchProductsUseC
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,11 +20,11 @@ class SearchProductsViewModel @Inject constructor(
     private val getSearchProductsUseCase: GetSearchProductsUseCase,
 ) : ViewModel() {
 
-    val product: MutableStateFlow<Flow<PagingData<Product>>> =
-        MutableStateFlow(flowOf(PagingData.empty()))
+    private val _product = MutableStateFlow<Flow<PagingData<Product>>>(flowOf(PagingData.empty()))
+    val product: StateFlow<Flow<PagingData<Product>>> = _product.asStateFlow()
 
-    fun getListProducts(term: String) = viewModelScope.launch {
-        product.value = getSearchProductsUseCase(term).cachedIn(viewModelScope)
+    fun getListProducts(term: String, accessToken: String) = viewModelScope.launch {
+        _product.value = getSearchProductsUseCase(term, accessToken).cachedIn(viewModelScope)
     }
 }
 
