@@ -61,7 +61,6 @@ class DetailItemFragment : Fragment() {
     }
 
     private fun bind(product: Product) {
-        binding.searchInput.setQuery(product.title, false)
         binding.loadingBar.isVisible = false
         binding.titleProduct.text = product.title
         binding.condition.text = product.condition
@@ -75,6 +74,15 @@ class DetailItemFragment : Fragment() {
         Glide.with(this)
             .load(product.thumbnail.replace("http:", "https:"))
             .into(binding.imageProduct)
+
+        binding.searchInput.apply {
+            setOnClickListener {
+                findNavController().navigate(DetailItemFragmentDirections.actionDetailItemFragmentToSearchProductFragment())
+            }
+            setOnQueryTextFocusChangeListener { view, hasFocus ->
+                if(hasFocus) findNavController().navigate(DetailItemFragmentDirections.actionDetailItemFragmentToSearchProductFragment())
+            }
+        }
     }
 
     private fun showError(

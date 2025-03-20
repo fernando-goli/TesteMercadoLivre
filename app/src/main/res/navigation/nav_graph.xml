@@ -23,6 +23,9 @@
         <argument
             android:name="product"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailItemFragment_to_searchProductFragment"
+            app:destination="@id/searchProductFragment" />
     </fragment>
 
     <fragment
